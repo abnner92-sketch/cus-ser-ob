@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#17324d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CS Observations">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<title>Customer Service Observations</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#ececec;color:#222;font-family:Arial,Helvetica,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #ccc;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:19px;margin:0}
+header button,.topbtn{border:0;border-radius:8px;padding:10px 13px;font-weight:700;background:#222;color:#fff}
+main{max-width:900px;margin:0 auto;padding:16px}
+.card{background:#fff;border:1px solid #cfcfcf;border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:0 2px 8px #0000000d}
+.form-title{text-align:center;margin:0 0 3px;font-size:28px;letter-spacing:.5px}
+.subtitle{text-align:center;color:#666;font-size:12px;letter-spacing:2px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+label{display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:5px}
+input,textarea,select{width:100%;border:1px solid #bbb;border-radius:7px;padding:10px;font:inherit;background:#fff}
+textarea{min-height:72px;resize:vertical}
+.section{margin-top:14px}
+.section h3{font-size:14px;margin:0 0 7px}
+.recognition{display:flex;gap:14px;flex-wrap:wrap}
+.recognition label{font-weight:400;color:#222;margin:0;display:flex;align-items:center;gap:5px}
+.recognition input{width:auto}
+.actions{display:flex;gap:10px;margin-top:16px}
+.actions button{flex:1;padding:12px;border:0;border-radius:8px;font-weight:700}
+.save{background:#1f1f1f;color:#fff}.clear{background:#e5e5e5;color:#222}
+.observation-block{border-top:1px solid #ddd;margin-top:16px;padding-top:16px}
+.observation-block:first-of-type{border-top:0;margin-top:0;padding-top:0}
+.history-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.history-head h2{margin:0;font-size:20px}
+.search{margin:12px 0}
+.record{border:1px solid #d5d5d5;border-radius:10px;padding:13px;margin-top:10px}
+.record-top{display:flex;justify-content:space-between;gap:10px}
+.record-top strong{font-size:15px}
+.muted{color:#666;font-size:12px}
+.pill{display:inline-block;background:#eee;border-radius:999px;padding:4px 8px;font-size:11px;margin-top:5px}
+.record-actions{display:flex;gap:7px;margin-top:10px}
+.record-actions button{border:1px solid #bbb;background:#fff;border-radius:6px;padding:7px 10px}
+.empty{text-align:center;color:#777;padding:25px 5px}
+.footer{text-align:center;color:#777;font-size:11px;padding:10px 0 30px}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.form-title{font-size:23px}main{padding:10px}.card{padding:14px}}
+</style>
+
+<style>
+:root{
+  --navy:#17324d;
+  --navy-dark:#10263a;
+  --slate:#536273;
+  --line:#d8dee5;
+  --soft:#f5f7f9;
+  --white:#ffffff;
+  --text:#1f2933;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#eef1f4;
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+header{
+  position:sticky;top:0;z-index:5;
+  background:var(--navy);
+  color:#fff;
+  border-bottom:4px solid #d8a928;
+  padding:14px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  box-shadow:0 2px 10px #0002;
+}
+header h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.2px}
+header button,.topbtn{
+  border:1px solid #ffffff55;border-radius:7px;padding:9px 13px;
+  font-weight:700;background:#ffffff14;color:#fff;cursor:pointer
+}
+main{max-width:900px;margin:0 auto;padding:24px 16px}
+.card{
+  background:var(--white);border:1px solid var(--line);border-radius:12px;
+  padding:24px;margin-bottom:18px;box-shadow:0 3px 14px #23384d0c
+}
+.form-title{
+  text-align:center;margin:0;color:var(--navy);
+  font-size:28px;letter-spacing:1.4px;font-weight:800
+}
+.subtitle{
+  text-align:center;color:var(--slate);font-size:11px;
+  letter-spacing:2.5px;margin:6px 0 24px;font-weight:600
+}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.observation-info{margin-top:14px}
+.field label,.section h3{
+  display:block;font-size:12px;font-weight:750;color:#465463;
+  margin-bottom:6px;letter-spacing:.15px
+}
+input,textarea,select{
+  width:100%;border:1px solid #c9d1da;border-radius:7px;padding:11px 12px;
+  font:inherit;background:#fff;color:var(--text);outline:none;
+  transition:border-color .15s,box-shadow .15s
+}
+input:focus,textarea:focus{
+  border-color:#54728e;box-shadow:0 0 0 3px #54728e18
+}
+textarea{min-height:82px;resize:vertical}
+.observation-block{
+  border-top:1px solid var(--line);margin-top:22px;padding-top:19px
+}
+.observation-block:first-of-type{border-top:0;margin-top:0;padding-top:0}
+.section{margin-top:17px}
+.section h3{font-size:13px;color:var(--navy);margin:0 0 7px}
+.recognition{
+  display:flex;gap:18px;flex-wrap:wrap;
+  background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:11px 12px
+}
+.recognition label{
+  font-weight:500;color:#293542;margin:0;display:flex;align-items:center;gap:6px
+}
+.recognition input{width:auto}
+.actions{display:flex;gap:10px;margin-top:22px}
+.actions button{
+  flex:1;padding:12px;border:0;border-radius:7px;font-weight:750;cursor:pointer
+}
+.save{background:var(--navy);color:#fff}
+.save:hover{background:var(--navy-dark)}
+.clear{background:#e9edf1;color:#263442}
+.history-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.history-head h2{margin:0;color:var(--navy);font-size:20px}
+.search{margin:14px 0}
+.record{
+  border:1px solid var(--line);border-left:4px solid var(--navy);
+  border-radius:8px;padding:14px;margin-top:10px;background:#fff
+}
+.record-top{display:flex;justify-content:space-between;gap:10px}
+.record-top strong{font-size:15px;color:var(--navy)}
+.muted{color:#687584;font-size:12px}
+.pill{
+  display:inline-block;background:#edf2f6;color:#334b61;border-radius:999px;
+  padding:4px 9px;font-size:11px;font-weight:700
+}
+.record-actions{display:flex;gap:7px;margin-top:10px}
+.record-actions button{
+  border:1px solid #c7d0d9;background:#fff;color:#344555;
+  border-radius:6px;padding:7px 11px;cursor:pointer
+}
+.empty{text-align:center;color:#778390;padding:28px 5px}
+.footer{text-align:center;color:#778390;font-size:11px;padding:8px 0 30px}
+@media(max-width:650px){
+  .info-grid{grid-template-columns:1fr}
+  .form-title{font-size:23px}
+  main{padding:12px 10px}
+  .card{padding:17px}
+  .subtitle{letter-spacing:1.6px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Customer Service Observations</h1>
+  <button onclick="showHistory()">History</button>
+</header>
+
+<main>
+<section class="card">
+  <h2 class="form-title">CUSTOMER SERVICE</h2>
+  <div class="subtitle">OBSERVE &nbsp;|&nbsp; COACH &nbsp;|&nbsp; DEVELOP &nbsp;|&nbsp; RECOGNIZE</div>
+
+  <div class="info-grid">
+    <div class="field">
+      <label>Date</label>
+      <input id="date" type="date">
+    </div>
+    <div class="field">
+      <label>Observer</label>
+      <input id="observer" placeholder="Your name">
+    </div>
+  </div>
+
+  <div class="info-grid observation-info">
+    <div class="field">
+      <label>Associate Observing</label>
+      <input id="associate" placeholder="Associate name">
+    </div>
+    <div class="field">
+      <label>Associate Dept</label>
+      <input id="assocDept" placeholder="Department">
+    </div>
+  </div>
+
+  <div class="observation-block">
+    <div class="section"><h3>G: (Greet)</h3><textarea id="greet" placeholder="What did you observe?"></textarea></div>
+    <div class="section"><h3>E: (Engage)</h3><textarea id="engage" placeholder="What did you observe?"></textarea></div>
+    <div class="section"><h3>T: (Thank)</h3><textarea id="thank" placeholder="What did you observe?"></textarea></div>
+    <div class="section"><h3>Associate Feedback</h3><textarea id="feedback" placeholder="Coaching, feedback, follow-up..."></textarea></div>
+    <div class="section">
+      <h3>Recognition</h3>
+      <div class="recognition">
+        <label><input type="radio" name="recognition" value="Homer"> Homer</label>
+        <label><input type="radio" name="recognition" value="Bravo"> Bravo</label>
+        <label><input type="radio" name="recognition" value="None" checked> None</label>
+        <label><input type="radio" name="recognition" value="Other"> Other</label>
+        <input id="otherRecognition" placeholder="Other recognition" style="max-width:220px">
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="save" onclick="saveObservation()">Save Observation</button>
+    <button class="clear" onclick="clearForm()">Clear</button>
+  </div>
+</section>
+
+<section class="card" id="history">
+  <div class="history-head">
+    <h2>Saved Observations</h2>
+    <button class="topbtn" onclick="exportData()">Export</button>
+  </div>
+  <input class="search" id="search" placeholder="Search by associate, observer, department, or date..." oninput="renderHistory()">
+  <div id="records"></div>
+</section>
+
+<div class="footer">Great customer service builds stronger communities.</div>
+</main>
+
+<script>
+let observations = JSON.parse(localStorage.getItem('customerServiceObservations') || '[]');
+let editingId = null;
+
+document.getElementById('date').value = new Date().toISOString().slice(0,10);
+
+function val(id){return document.getElementById(id).value.trim()}
+function getRecognition(){
+  const selected=document.querySelector('input[name="recognition"]:checked')?.value || 'None';
+  if(selected==='Other'){
+    const other=val('otherRecognition');
+    return other ? 'Other: '+other : 'Other';
+  }
+  return selected;
+}
+function saveObservation(){
+  const record={
+    id: editingId || Date.now(),
+    date: val('date'),
+    observer: val('observer'), associate: val('associate'), assocDept: val('assocDept'),
+    greet: val('greet'), engage: val('engage'), thank: val('thank'),
+    feedback: val('feedback'), recognition: getRecognition(),
+    savedAt: new Date().toISOString()
+  };
+  if(!record.associate){alert('Please enter the associate being observed.');return}
+  if(editingId){
+    observations=observations.map(x=>x.id===editingId?record:x);
+    editingId=null;
+  }else observations.unshift(record);
+  localStorage.setItem('customerServiceObservations',JSON.stringify(observations));
+  clearForm();
+  renderHistory();
+  document.getElementById('history').scrollIntoView({behavior:'smooth'});
+}
+function clearForm(){
+  editingId=null;
+  ['observer','associate','assocDept','greet','engage','thank','feedback','otherRecognition'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('date').value=new Date().toISOString().slice(0,10);
+  document.querySelector('input[name="recognition"][value="None"]').checked=true;
+}
+function editRecord(id){
+  const r=observations.find(x=>x.id===id); if(!r)return;
+  editingId=id;
+  for(const k of ['date','observer','associate','assocDept','greet','engage','thank','feedback']) document.getElementById(k).value=r[k]||'';
+  const vals=['Homer','Bravo','None'];
+  let matched=false;
+  vals.forEach(v=>{if(r.recognition===v){document.querySelector(`input[name="recognition"][value="${v}"]`).checked=true;matched=true}});
+  if(!matched){document.querySelector('input[name="recognition"][value="Other"]').checked=true;document.getElementById('otherRecognition').value=r.recognition.replace(/^Other:\\s*/,'');}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function deleteRecord(id){
+  if(!confirm('Delete this observation?'))return;
+  observations=observations.filter(x=>x.id!==id);
+  localStorage.setItem('customerServiceObservations',JSON.stringify(observations));
+  renderHistory();
+}
+function renderHistory(){
+  const q=val('search').toLowerCase();
+  const box=document.getElementById('records');
+  const list=observations.filter(r=>JSON.stringify(r).toLowerCase().includes(q));
+  if(!list.length){box.innerHTML='<div class="empty">No saved observations yet.</div>';return}
+  box.innerHTML=list.map(r=>`
+    <div class="record">
+      <div class="record-top">
+        <div><strong>${esc(r.associate)}</strong><div class="muted">${esc(r.date||'No date')} • ${esc(r.assocDept||'No department')}</div></div>
+        <span class="pill">${esc(r.recognition||'None')}</span>
+      </div>
+      <div class="muted" style="margin-top:7px">Observer: ${esc(r.observer||'Not entered')}</div>
+      ${r.feedback?`<div style="margin-top:8px"><strong>Feedback:</strong> ${esc(r.feedback)}</div>`:''}
+      <div class="record-actions">
+        <button onclick="editRecord(${r.id})">Edit</button>
+        <button onclick="deleteRecord(${r.id})">Delete</button>
+      </div>
+    </div>`).join('');
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function exportData(){
+  const blob=new Blob([JSON.stringify(observations,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='customer-service-observations.json'; a.click();
+  URL.revokeObjectURL(a.href);
+}
+function showHistory(){document.getElementById('history').scrollIntoView({behavior:'smooth'});}
+renderHistory();
+</script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
+</body>
+</html>
